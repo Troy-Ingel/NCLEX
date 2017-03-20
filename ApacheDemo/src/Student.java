@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,18 +13,22 @@ import javafx.stage.Stage;
 
 public class Student {
 	private String firstName, lastName;
-	private int studentId;
+	private String studentId;
+	private ArrayList<PracticeAssessment> practiceList;
+	private ArrayList<ProctoredAssessment> proctoredList;
 
 	public Student() {
 		this.firstName = "";
 		this.lastName = "";
-		this.studentId = 0;
+		this.studentId = "";
 	}
 
-	public Student(String firstName, String lastName, int studentId) {
+	public Student(String firstName, String lastName, String studentId) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.studentId = studentId;
+		practiceList = new ArrayList<PracticeAssessment>();
+		proctoredList = new ArrayList<ProctoredAssessment>();
 	}
 
 	public String getFirstName() {
@@ -42,12 +47,28 @@ public class Student {
 		this.lastName = lastName;
 	}
 
-	public int getStudentId() {
+	public String getStudentId() {
 		return studentId;
 	}
 
-	public void setStudentId(int studentId) {
+	public void setStudentId(String studentId) {
 		this.studentId = studentId;
+	}
+
+	public ArrayList<ProctoredAssessment> getProctoredAssessment() {
+		return proctoredList;
+	}
+
+	public void setProctoredAssessment(ProctoredAssessment proctoredAssessment) {
+		proctoredList.add(proctoredAssessment);
+	}
+
+	public ArrayList<PracticeAssessment> getPracticeAssessment() {
+		return practiceList;
+	}
+
+	public void setPracticeAssessment(PracticeAssessment practiceAssessment) {
+		practiceList.add(practiceAssessment);
 	}
 
 }

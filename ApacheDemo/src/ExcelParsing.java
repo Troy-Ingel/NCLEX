@@ -1,20 +1,14 @@
 
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Hashtable;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.formula.functions.Column;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  * A dirty simple program that reads an Excel file.
@@ -23,47 +17,62 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  */
 public class ExcelParsing {
+	Hashtable<String, Student> hash;
 
-	public static void main(String[] args) throws IOException {
-		String excelFilePath = "results-from-proctored-and-practice-exams-20160214.xls";
+	public Hashtable<String, Student> parse() throws IOException {
+		String excelFilePath = "nclex.xls";
 		FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 		HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
 		DataFormatter formatter = new DataFormatter();
 		Sheet sheet;
-
+		hash = new Hashtable<String, Student>();
+		String[] studentArray = new String[10];
 		sheet = workbook.getSheetAt(0);
 		int numRows = 0;
 		int numCols = 0;
-		for(;;){
-			String text = formatter.formatCellValue(sheet.getRow(numRows+1).getCell(0));
-			if (text.length() > 0){
+		for (;;) {
+			String text = formatter.formatCellValue(sheet.getRow(numRows + 1).getCell(0));
+			if (text.length() > 0) {
 				numRows++;
-			}else break;
+			} else
+				break;
 		}
-		for(;;){
+		for (;;) {
 			String text = formatter.formatCellValue(sheet.getRow(0).getCell(numCols));
-			if (text.length() > 0){
+			if (text.length() > 0) {
 				numCols++;
-			}else break;
+			} else
+				break;
 		}
-		System.out.println("Rows: " + numRows + " Colums: " + numCols);
+		System.out.println("Rows: " + numRows + " Columns: " + numCols);
 		System.out.println(" ");
-		for(int r = 0; r <= numRows; r++){
-			for(int c = 0; c < 10; c++){
-				String text = formatter.formatCellValue(sheet.getRow(r).getCell(c));
-				System.out.print(text);
+
+		for (int r = 1; r <= numRows + 1; r++) {
+			if (studentArray[2] != null) {
+				if (hash.containsKey(studentArray[2]) == false) {
+					// hash.put(studentArray[2], new ArrayList<String[]>());
+					// hash.get(studentArray[2]).add(studentArray);
+				} else {
+					// hash.get(studentArray[2]).add(studentArray);
+				}
+				studentArray = new String[10];
+			}
+			for (int c = 0; c < 10; c++) {
+				studentArray[c] = formatter.formatCellValue(sheet.getRow(r).getCell(c));
+				// String text =
+				// formatter.formatCellValue(sheet.getRow(r).getCell(c));
+				System.out.print(studentArray[c]);
 				System.out.print("\t\t");
-				
-			
+
 			}
 			System.out.println("");
 		}
-	    
 
 		workbook.close();
 		inputStream.close();
-		
-		System.out.println("Done");
+		System.out.println("----------------------------------------------------------------------------------");
+
+		return hash;
 	}
 
 }
